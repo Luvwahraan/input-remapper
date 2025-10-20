@@ -106,6 +106,9 @@ class AbsToAbsHandler(MappingHandler):
                 deadzone=self.mapping.deadzone,
                 gain=self.mapping.gain,
                 expo=self.mapping.expo,
+                inverted=self.mapping.inverted,
+                unipolar=self.mapping.unipolar,
+                negative=self.mapping.negative,
             )
 
         try:

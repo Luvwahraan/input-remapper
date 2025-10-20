@@ -32,12 +32,18 @@ class Transformation:
         deadzone: float,
         gain: float = 1,
         expo: float = 0,
+        inverted: bool = False,
+        unipolar: bool = False,
+        negative: bool = False,
     ) -> None:
         self._max = max_
         self._min = min_
         self._deadzone = deadzone
         self._gain = gain
         self._expo = expo
+        self._inverted = inverted
+        self._unipolar = unipolar
+        self._negative = negative
         self._cache: Dict[float, float] = {}
 
     def __call__(self, /, x: Union[int, float]) -> float:
@@ -62,12 +68,21 @@ class Transformation:
         """Move and scale x to be between -1 and 1
         return: x
         """
+        # invert value if needed
+        if self._inverted:
+            x = self._max - (x - self._min)
+
+        # for on direction axis only
+        if self._unipolar:
+            return 2 * (x - self._min) / (self._max - self._min) - 1
+
         if self._min == -1 and self._max == 1:
             return x
 
         half_range = (self._max - self._min) / 2
         middle = half_range + self._min
         return (x - middle) / half_range
+
 
     def _flatten_deadzone(self, x: float) -> float:
         """
@@ -81,6 +96,15 @@ class Transformation:
            |------------>          |------------>
             -1       1  x           -1       1  x
         """
+        # for one direction only axis
+        if self._unipolar:
+            if x <= self._deadzone:
+                return 0.0
+            val = (x - self._deadzone) / (1 - self._deadzone)
+            if self._negative:
+                val = -val
+            return val
+
         if abs(x) <= self._deadzone:
             return 0
 

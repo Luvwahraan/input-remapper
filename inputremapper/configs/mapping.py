@@ -177,6 +177,9 @@ class UIMapping(BaseModel):
     gain: float = 1.0  # The scale factor for the transformation
     # The expo factor for the transformation
     expo: confloat(ge=-1, le=1) = 0  # type: ignore
+    inverted: bool = False
+    unipolar: bool = False
+    negative: bool = False
 
     # when mapping to relative axis
     # The frequency [Hz] at which EV_REL events get generated
