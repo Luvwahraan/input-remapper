@@ -287,6 +287,9 @@ The following table contains all possible parameters and their default values:
 | deadzone                 | 0.1     | float ∈ (0, 1)  | The deadzone of the input axis                                                                                          |
 | gain                     | 1.0     | float           | Scale factor when mapping an axis to an axis                                                                            |
 | expo                     | 0       | float ∈ (-1, 1) | Non liniarity factor see also [GeoGebra](https://www.geogebra.org/calculator/mkdqueky)                                  |
+| inverted                 | false   | bool            | Invert output value                                                                                                     |
+| unipolar                 | false   | bool            | Output value only positive or negative. No center.                                                                      |
+| negative                 | false   | bool            | With unipolar, output only negative or 0 values                                                                         |
 | **EV_REL output**        |         |                 |                                                                                                                         |
 | rel_rate                 | 60      | positive int    | The frequency `[Hz]` at which `EV_REL` events get generated (also effects mouse macro)                                  |
 | **EV_REL as input**      |         |                 |                                                                                                                         |
