@@ -47,6 +47,30 @@ DEFAULT_UINPUTS = {
         evdev.ecodes.EV_KEY: [*range(0x110, 0x118)],  # BTN_LEFT - BTN_TASK
         evdev.ecodes.EV_REL: [*range(0x00, 0x0D)],  # all REL axis
     },
+    "vjoyA": {
+        evdev.ecodes.EV_KEY: [
+            *range(evdev.ecodes.BTN_TRIGGER, evdev.ecodes.BTN_DEAD + 1),
+            *range(evdev.ecodes.BTN_TRIGGER_HAPPY1, evdev.ecodes.BTN_TRIGGER_HAPPY40 + 1)
+        ],
+        evdev.ecodes.EV_ABS: [
+            *(
+                (i, evdev.AbsInfo(0, MIN_ABS, MAX_ABS, 0, 0, 0))
+                for i in range(0x00, 0x06)
+            ),
+        ],
+    },
+    "vjoyB": {
+        evdev.ecodes.EV_KEY: [
+            *range(evdev.ecodes.BTN_TRIGGER, evdev.ecodes.BTN_DEAD + 1),
+            *range(evdev.ecodes.BTN_TRIGGER_HAPPY1, evdev.ecodes.BTN_TRIGGER_HAPPY39 + 1)
+        ],
+        evdev.ecodes.EV_ABS: [
+            *(
+                (i, evdev.AbsInfo(0, MIN_ABS, MAX_ABS, 0, 0, 0))
+                for i in range(0x00, 0x06)
+            ),
+        ],
+    },
 }
 DEFAULT_UINPUTS["keyboard + mouse"] = {
     evdev.ecodes.EV_KEY: [

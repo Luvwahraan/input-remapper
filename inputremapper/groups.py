@@ -68,6 +68,8 @@ TABLET_KEYS = [
 
 class DeviceType(str, enum.Enum):
     GAMEPAD = "gamepad"
+    VJOYA = "vjoyA"
+    VJOYB = "vjoyB"
     KEYBOARD = "keyboard"
     MOUSE = "mouse"
     TOUCHPAD = "touchpad"
@@ -109,6 +111,145 @@ def _is_gamepad(capabilities):
 
     return True
 
+def _is_vjoyA(capabilities):
+    """Check if joystick movements are available for preset."""
+    buttons = {
+        evdev.ecodes.BTN_TRIGGER,
+        evdev.ecodes.BTN_THUMB,
+        evdev.ecodes.BTN_THUMB2,
+        evdev.ecodes.BTN_TOP,
+        evdev.ecodes.BTN_TOP2,
+        evdev.ecodes.BTN_PINKIE,
+        evdev.ecodes.BTN_BASE,
+        evdev.ecodes.BTN_BASE2,
+        evdev.ecodes.BTN_BASE3,
+        evdev.ecodes.BTN_BASE4,
+        evdev.ecodes.BTN_BASE5,
+        evdev.ecodes.BTN_BASE6,
+        evdev.ecodes.BTN_DEAD,
+        evdev.ecodes.BTN_TRIGGER_HAPPY1,
+        evdev.ecodes.BTN_TRIGGER_HAPPY2,
+        evdev.ecodes.BTN_TRIGGER_HAPPY3,
+        evdev.ecodes.BTN_TRIGGER_HAPPY4,
+        evdev.ecodes.BTN_TRIGGER_HAPPY5,
+        evdev.ecodes.BTN_TRIGGER_HAPPY6,
+        evdev.ecodes.BTN_TRIGGER_HAPPY7,
+        evdev.ecodes.BTN_TRIGGER_HAPPY8,
+        evdev.ecodes.BTN_TRIGGER_HAPPY9,
+        evdev.ecodes.BTN_TRIGGER_HAPPY10,
+        evdev.ecodes.BTN_TRIGGER_HAPPY11,
+        evdev.ecodes.BTN_TRIGGER_HAPPY12,
+        evdev.ecodes.BTN_TRIGGER_HAPPY13,
+        evdev.ecodes.BTN_TRIGGER_HAPPY14,
+        evdev.ecodes.BTN_TRIGGER_HAPPY15,
+        evdev.ecodes.BTN_TRIGGER_HAPPY16,
+        evdev.ecodes.BTN_TRIGGER_HAPPY17,
+        evdev.ecodes.BTN_TRIGGER_HAPPY18,
+        evdev.ecodes.BTN_TRIGGER_HAPPY19,
+        evdev.ecodes.BTN_TRIGGER_HAPPY20,
+        evdev.ecodes.BTN_TRIGGER_HAPPY21,
+        evdev.ecodes.BTN_TRIGGER_HAPPY22,
+        evdev.ecodes.BTN_TRIGGER_HAPPY23,
+        evdev.ecodes.BTN_TRIGGER_HAPPY24,
+        evdev.ecodes.BTN_TRIGGER_HAPPY25,
+        evdev.ecodes.BTN_TRIGGER_HAPPY26,
+        evdev.ecodes.BTN_TRIGGER_HAPPY27,
+        evdev.ecodes.BTN_TRIGGER_HAPPY28,
+        evdev.ecodes.BTN_TRIGGER_HAPPY29,
+        evdev.ecodes.BTN_TRIGGER_HAPPY30,
+        evdev.ecodes.BTN_TRIGGER_HAPPY31,
+        evdev.ecodes.BTN_TRIGGER_HAPPY32,
+        evdev.ecodes.BTN_TRIGGER_HAPPY33,
+        evdev.ecodes.BTN_TRIGGER_HAPPY34,
+        evdev.ecodes.BTN_TRIGGER_HAPPY35,
+        evdev.ecodes.BTN_TRIGGER_HAPPY36,
+        evdev.ecodes.BTN_TRIGGER_HAPPY37,
+        evdev.ecodes.BTN_TRIGGER_HAPPY38,
+        evdev.ecodes.BTN_TRIGGER_HAPPY39,
+        evdev.ecodes.BTN_TRIGGER_HAPPY40,
+    }
+    if not buttons.intersection(capabilities.get(EV_KEY, [])):
+        # no button is in the key capabilities
+        return False
+
+    # joysticks
+    abs_capabilities = capabilities.get(EV_ABS, [])
+    if evdev.ecodes.ABS_X not in abs_capabilities:
+        return False
+    if evdev.ecodes.ABS_Y not in abs_capabilities:
+        return False
+
+    return True
+
+# same as vjoyA, but one button less
+def _is_vjoyB(capabilities):
+    """Check if joystick movements are available for preset."""
+    buttons = {
+        evdev.ecodes.BTN_TRIGGER,
+        evdev.ecodes.BTN_THUMB,
+        evdev.ecodes.BTN_THUMB2,
+        evdev.ecodes.BTN_TOP,
+        evdev.ecodes.BTN_TOP2,
+        evdev.ecodes.BTN_PINKIE,
+        evdev.ecodes.BTN_BASE,
+        evdev.ecodes.BTN_BASE2,
+        evdev.ecodes.BTN_BASE3,
+        evdev.ecodes.BTN_BASE4,
+        evdev.ecodes.BTN_BASE5,
+        evdev.ecodes.BTN_BASE6,
+        evdev.ecodes.BTN_DEAD,
+        evdev.ecodes.BTN_TRIGGER_HAPPY1,
+        evdev.ecodes.BTN_TRIGGER_HAPPY2,
+        evdev.ecodes.BTN_TRIGGER_HAPPY3,
+        evdev.ecodes.BTN_TRIGGER_HAPPY4,
+        evdev.ecodes.BTN_TRIGGER_HAPPY5,
+        evdev.ecodes.BTN_TRIGGER_HAPPY6,
+        evdev.ecodes.BTN_TRIGGER_HAPPY7,
+        evdev.ecodes.BTN_TRIGGER_HAPPY8,
+        evdev.ecodes.BTN_TRIGGER_HAPPY9,
+        evdev.ecodes.BTN_TRIGGER_HAPPY10,
+        evdev.ecodes.BTN_TRIGGER_HAPPY11,
+        evdev.ecodes.BTN_TRIGGER_HAPPY12,
+        evdev.ecodes.BTN_TRIGGER_HAPPY13,
+        evdev.ecodes.BTN_TRIGGER_HAPPY14,
+        evdev.ecodes.BTN_TRIGGER_HAPPY15,
+        evdev.ecodes.BTN_TRIGGER_HAPPY16,
+        evdev.ecodes.BTN_TRIGGER_HAPPY17,
+        evdev.ecodes.BTN_TRIGGER_HAPPY18,
+        evdev.ecodes.BTN_TRIGGER_HAPPY19,
+        evdev.ecodes.BTN_TRIGGER_HAPPY20,
+        evdev.ecodes.BTN_TRIGGER_HAPPY21,
+        evdev.ecodes.BTN_TRIGGER_HAPPY22,
+        evdev.ecodes.BTN_TRIGGER_HAPPY23,
+        evdev.ecodes.BTN_TRIGGER_HAPPY24,
+        evdev.ecodes.BTN_TRIGGER_HAPPY25,
+        evdev.ecodes.BTN_TRIGGER_HAPPY26,
+        evdev.ecodes.BTN_TRIGGER_HAPPY27,
+        evdev.ecodes.BTN_TRIGGER_HAPPY28,
+        evdev.ecodes.BTN_TRIGGER_HAPPY29,
+        evdev.ecodes.BTN_TRIGGER_HAPPY30,
+        evdev.ecodes.BTN_TRIGGER_HAPPY31,
+        evdev.ecodes.BTN_TRIGGER_HAPPY32,
+        evdev.ecodes.BTN_TRIGGER_HAPPY33,
+        evdev.ecodes.BTN_TRIGGER_HAPPY34,
+        evdev.ecodes.BTN_TRIGGER_HAPPY35,
+        evdev.ecodes.BTN_TRIGGER_HAPPY36,
+        evdev.ecodes.BTN_TRIGGER_HAPPY37,
+        evdev.ecodes.BTN_TRIGGER_HAPPY38,
+        evdev.ecodes.BTN_TRIGGER_HAPPY39,
+    }
+    if not buttons.intersection(capabilities.get(EV_KEY, [])):
+        # no button is in the key capabilities
+        return False
+
+    # joysticks
+    abs_capabilities = capabilities.get(EV_ABS, [])
+    if evdev.ecodes.ABS_X not in abs_capabilities:
+        return False
+    if evdev.ecodes.ABS_Y not in abs_capabilities:
+        return False
+
+    return True
 
 def _is_mouse(capabilities):
     """Check if the capabilities represent those of a mouse."""
@@ -177,6 +318,12 @@ def classify(device) -> DeviceType:
 
     if _is_gamepad(capabilities):
         return DeviceType.GAMEPAD
+
+    if _is_vjoyA(capabilities):
+        return DeviceType.VJOYA
+
+    if _is_vjoyB(capabilities):
+        return DeviceType.VJOYB
 
     if _is_mouse(capabilities):
         return DeviceType.MOUSE
